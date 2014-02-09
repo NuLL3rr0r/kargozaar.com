@@ -3,9 +3,7 @@ StockMarket
 
 This project consists of the following sub-projects:
 
-Client/Android
+CoreLib
 
-Server/CoreLib
-
-Server/Rest
+Rest
 
