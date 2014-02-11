@@ -15,7 +15,7 @@ namespace StockMarket {
 class StockMarket::CgiRoot : public Wt::WApplication
 {
 public:
-    CgiRoot(const Wt::WEnvironment &env);
+    explicit CgiRoot(const Wt::WEnvironment &env);
 
 public:
     static Wt::WApplication *CreateApplication(const Wt::WEnvironment &env);

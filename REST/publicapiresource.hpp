@@ -18,7 +18,7 @@ namespace StockMarket {
 class StockMarket::PublicAPIResource : public Wt::WResource
 {
 public:
-    PublicAPIResource(WObject *parent = NULL);
+    explicit PublicAPIResource(WObject *parent = NULL);
     ~PublicAPIResource();
 
 public:
