@@ -2,7 +2,7 @@
 #define PUBLIC_API_RESOURCE_HPP
 
 
-#include <Wt/WResource>
+#include "apiresource.hpp"
 
 namespace Wt {
     namespace Http {
@@ -15,11 +15,11 @@ namespace StockMarket {
     class PublicAPIResource;
 }
 
-class StockMarket::PublicAPIResource : public Wt::WResource
+class StockMarket::PublicAPIResource : public StockMarket::APIResource
 {
 public:
     explicit PublicAPIResource(WObject *parent = NULL);
-    ~PublicAPIResource();
+    virtual ~PublicAPIResource();
 
 public:
     virtual void handleRequest(const Wt::Http::Request &request, Wt::Http::Response &response);

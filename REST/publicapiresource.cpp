@@ -10,8 +10,9 @@ using namespace Wt;
 using namespace StockMarket;
 
 PublicAPIResource::PublicAPIResource(WObject *parent) :
-    WResource(parent)
+    APIResource(parent)
 {
+
 }
 
 PublicAPIResource::~PublicAPIResource()
@@ -21,6 +22,7 @@ PublicAPIResource::~PublicAPIResource()
 
 void PublicAPIResource::handleRequest(const Wt::Http::Request &request, Wt::Http::Response &response)
 {
+
 }
 
 
