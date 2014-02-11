@@ -10,9 +10,8 @@
 using namespace std;
 using namespace CoreLib;
 
-class System::Impl
+struct System::Impl
 {
-public:
 #if defined ( __unix__ )
     static constexpr mode_t LOCK_FILE_PERMISSION = 0666;
 #endif  // defined ( __unix__ )

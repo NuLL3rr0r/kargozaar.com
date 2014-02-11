@@ -24,7 +24,7 @@ public:
     };
 
 private:
-    class Impl;
+    struct Impl;
     static std::unique_ptr<Impl> s_pimpl;
 
 public:

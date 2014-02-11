@@ -11,7 +11,7 @@ namespace StockMarket {
 class StockMarket::DBTables
 {
 private:
-    class Impl;
+    struct Impl;
     std::unique_ptr<Impl> m_pimpl;
 
 public:

@@ -10,9 +10,8 @@
 
 using namespace CoreLib;
 
-class Log::Impl
+struct Log::Impl
 {
-public:
     struct ETypeHasher
     {
         std::size_t operator()(const EType &t) const
@@ -38,17 +37,14 @@ public:
 
     typedef std::unique_ptr<StorageStruct> Storage_ptr;
 
-public:
     std::mutex StorageMutex;
     Storage_ptr StorageInstance;
 
     std::mutex LogMutex;
 
-public:
     Impl();
     ~Impl();
 
-public:
     StorageStruct *Storage();
 };
 

@@ -18,7 +18,7 @@ namespace CoreLib {
 class CoreLib::System
 {
 private:
-    class Impl;
+    struct Impl;
 
 public:
     static bool Exec(const std::string &cmd);

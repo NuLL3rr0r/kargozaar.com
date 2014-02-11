@@ -11,7 +11,7 @@ namespace CoreLib {
 class CoreLib::Crypto
 {
 private:
-    class Impl;
+    struct Impl;
 
 public:
     static bool Encrypt(const char *plainText, std::string &out_encodedText);

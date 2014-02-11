@@ -10,17 +10,14 @@ using namespace std;
 using namespace cppdb;
 using namespace CoreLib;
 
-class DB::Impl
+struct DB::Impl
 {
-public:
 #ifdef CORELIB_STATIC
     static bool DB::IsSQLite3DriverLoaded = false;
 #endif  // CORELIB_STATIC
 
-public:
     cppdb::session SQL;
 
-public:
     Impl();
     ~Impl();
 };

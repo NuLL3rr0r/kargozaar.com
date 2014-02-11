@@ -17,7 +17,7 @@ public:
     typedef boost::int_least64_t Interval_t;
 
 private:
-    class Impl;
+    struct Impl;
     std::unique_ptr<Impl> m_pimpl;
 
 public:

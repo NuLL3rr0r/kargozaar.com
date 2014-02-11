@@ -25,9 +25,8 @@ using namespace CryptoPP;
 using namespace CoreLib;
 
 
-class Crypto::Impl
+struct Crypto::Impl
 {
-public:
     // Use this nice HEX/ASCII converter and your editor's replace dialog,
     // to create your own Key and IV.
     // http://www.dolcevie.com/js/converter.html

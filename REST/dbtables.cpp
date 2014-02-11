@@ -9,17 +9,14 @@ using namespace std;
 using namespace StockMarket;
 
 
-class DBTables::Impl
+struct DBTables::Impl
 {
-public:
     std::unordered_map<std::string, std::string> TablesHash;
     std::unordered_map<std::string, std::string> FieldsHash;
 
-public:
     Impl();
     ~Impl();
 
-public:
     void InitHashes();
 };
 

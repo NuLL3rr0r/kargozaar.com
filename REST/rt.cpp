@@ -8,15 +8,13 @@
 using namespace std;
 using namespace StockMarket;
 
-class RT::Impl
+struct RT::Impl
 {
-public:
     typedef std::unique_ptr<StorageStruct> Storage_ptr;
     typedef std::unique_ptr<CoreLib::DB> DB_ptr;
     typedef std::unique_ptr<StockMarket::DBTables> DBTables_ptr;
     typedef std::unique_ptr<StockMarket::StockUpdateWorker> StockUpdateWorker_ptr;
 
-public:
     std::mutex StorageMutex;
     Storage_ptr StorageInstance;
 
@@ -29,7 +27,6 @@ public:
     std::mutex StockUpdateWorkerMutex;
     StockUpdateWorker_ptr StockUpdateWorkerInstance;
 
-public:
     Impl();
     ~Impl();
 };

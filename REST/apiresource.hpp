@@ -18,7 +18,7 @@ namespace StockMarket {
 class StockMarket::APIResource : public Wt::WResource
 {
 private:
-    class Impl;
+    struct Impl;
     std::unique_ptr<Impl> m_pimpl;
 
 public:

@@ -5,9 +5,8 @@ using namespace std;
 using namespace Wt;
 using namespace StockMarket;
 
-class APIResource::Impl
+struct APIResource::Impl
 {
-public:
     Impl();
     ~Impl();
 };

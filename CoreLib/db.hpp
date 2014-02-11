@@ -12,7 +12,7 @@ namespace CoreLib {
 class CoreLib::DB
 {
 private:
-    class Impl;
+    struct Impl;
     std::unique_ptr<Impl> m_pimpl;
 
 public:

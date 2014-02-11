@@ -11,6 +11,8 @@ using namespace StockMarket;
 
 CgiRoot::CgiRoot(const WEnvironment &env) : WApplication(env)
 {
+    this->setInternalPathDefaultValid(false);
+
     root()->clear();
     root()->addWidget(new WText(
                           "<center>"

@@ -24,12 +24,10 @@ using namespace boost;
 using namespace CoreLib;
 using namespace StockMarket;
 
-class StockUpdateWorker::Impl
+struct StockUpdateWorker::Impl
 {
-public:
     typedef std::unique_ptr<boost::thread> thread_ptr;
 
-public:
     bool Running;
     bool StartImmediately;
 
@@ -40,11 +38,9 @@ public:
     thread_ptr WorkerThread;
     std::mutex WorkerMutex;
 
-public:
     Impl();
     ~Impl();
 
-public:
     void Cron();
     void Update();
 };
