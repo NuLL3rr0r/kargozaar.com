@@ -27,7 +27,7 @@ struct PublicAPIResource::Impl
     typedef vector<vector<std::string> > Table_t;
     typedef vector<std::string> Row_t;
 
-    std::unique_ptr<ServiceContract<Impl> > ServiceContractPtr;
+    std::unique_ptr<StockMarket::ServiceContract> ServiceContractPtr;
 
     void GetLatestData(std::string &out_date, std::string &out_time,
                        Row_t &out_titles,
@@ -45,7 +45,7 @@ PublicAPIResource::PublicAPIResource(WObject *parent) :
     APIResource(parent),
     m_pimpl(std::make_unique<PublicAPIResource::Impl>())
 {
-    m_pimpl->ServiceContractPtr = std::make_unique<StockMarket::ServiceContract<PublicAPIResource::Impl> >(m_pimpl.get());
+    m_pimpl->ServiceContractPtr = std::make_unique<StockMarket::ServiceContract>();
     m_pimpl->ServiceContractPtr->Register(LatestDataJSON_URI_TEMPLATE);
     m_pimpl->ServiceContractPtr->Register(LatestDataXML_URI_TEMPLATE);
 }
