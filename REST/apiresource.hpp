@@ -11,22 +11,29 @@ namespace Wt {
     }
 }
 
+#include <CoreLib/httpstatus.hpp>
+
 namespace StockMarket {
     class APIResource;
 }
 
 class StockMarket::APIResource : public Wt::WResource
 {
-private:
-    struct Impl;
-    std::unique_ptr<Impl> m_pimpl;
-
 public:
     explicit APIResource(WObject *parent = NULL);
     virtual ~APIResource() = 0;
 
 public:
     virtual void handleRequest(const Wt::Http::Request &request, Wt::Http::Response &response) = 0;
+
+protected:
+    std::wstring GetHTTPStatus(const CoreLib::HTTPStatus::HTTPStatusCode &code) const;
+    std::wstring GetHTTPStatusJSON(const CoreLib::HTTPStatus::HTTPStatusCode &code) const;
+    std::wstring GetHTTPStatusXML(const CoreLib::HTTPStatus::HTTPStatusCode &code) const;
+
+    void Print(Wt::Http::Response &response, const std::wstring &text);
+    void PrintJSON(Wt::Http::Response &response, const std::wstring &json);
+    void PrintXML(Wt::Http::Response &response, const std::wstring &xml);
 };
 
 

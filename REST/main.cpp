@@ -96,7 +96,7 @@ int main(int argc, char **argv)
         Wt::WServer server(argv[0]);
         server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
         StockMarket::PublicAPIResource publicAPIResource;
-        server.addResource(&publicAPIResource, "/v1.0");
+        server.addResource(&publicAPIResource, "/StockMarket");
         server.addEntryPoint(Wt::Application, StockMarket::CgiRoot::CreateApplication, "", "favicon.ico");
         if (server.start()) {
             Wt::WServer::waitForShutdown();

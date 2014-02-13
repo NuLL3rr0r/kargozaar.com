@@ -4,19 +4,16 @@
 
 #include "apiresource.hpp"
 
-namespace Wt {
-    namespace Http {
-        class Request;
-        class Response;
-    }
-}
-
 namespace StockMarket {
     class PublicAPIResource;
 }
 
 class StockMarket::PublicAPIResource : public StockMarket::APIResource
 {
+private:
+    struct Impl;
+    std::unique_ptr<Impl> m_pimpl;
+
 public:
     explicit PublicAPIResource(WObject *parent = NULL);
     virtual ~PublicAPIResource();

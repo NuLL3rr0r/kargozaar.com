@@ -333,7 +333,8 @@ void StockUpdateWorker::Impl::Update()
                                                               " FROM %1%"
                                                               " ORDER BY ROWID ASC"
                                                               " LIMIT 1;")
-                                                % RT::DBTables()->Table("LAST_UPDATE")).str();
+                                                % RT::DBTables()->Table("LAST_UPDATE")).str()
+                                               << cppdb::row;
 
                                     if (!r.empty()) {
                                         string lastUpdateDate;
