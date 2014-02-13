@@ -20,7 +20,7 @@ using namespace std;
 using namespace boost;
 using namespace CoreLib;
 
-class Mail::Impl
+struct Mail::Impl
 {
     std::string From;
     std::string To;
