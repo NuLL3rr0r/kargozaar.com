@@ -174,6 +174,11 @@ void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
     Table_t data;
     GetLatestData(date, time, titles, data);
 
+    tree.put(L"StockMarket.version.major", "1");
+    tree.put(L"StockMarket.version.minor", "0");
+    tree.put(L"StockMarket.version.compat.minor", "1");
+    tree.put(L"StockMarket.version.compat.minor", "0");
+
     tree.put(L"StockMarket.date", WString(date).value());
     tree.put(L"StockMarket.time", WString(time).value());
 
@@ -214,6 +219,11 @@ void PublicAPIResource::Impl::LatestDataXML(std::wstring &out_response)
     Row_t titles;
     Table_t data;
     GetLatestData(date, time, titles, data);
+
+    tree.put(L"StockMarket.version.major", "1");
+    tree.put(L"StockMarket.version.minor", "0");
+    tree.put(L"StockMarket.version.compat.major", "1");
+    tree.put(L"StockMarket.version.compat.minor", "0");
 
     tree.put(L"StockMarket.date", WString(date).value());
     tree.put(L"StockMarket.time", WString(time).value());
