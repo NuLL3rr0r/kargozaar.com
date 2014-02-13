@@ -328,23 +328,26 @@ void StockUpdateWorker::Impl::Update()
                                         time.assign(result[0].first, result[0].second);
                                     }
 
-                                    cppdb::result r = RT::DB()->SQL()
-                                            << (boost::format("SELECT date, time"
-                                                              " FROM %1%"
-                                                              " ORDER BY ROWID ASC"
-                                                              " LIMIT 1;")
-                                                % RT::DBTables()->Table("LAST_UPDATE")).str()
-                                               << cppdb::row;
+                                    try {
+                                        cppdb::result r = RT::DB()->SQL()
+                                                << (boost::format("SELECT date, time"
+                                                                  " FROM %1%"
+                                                                  " ORDER BY ROWID ASC"
+                                                                  " LIMIT 1;")
+                                                    % RT::DBTables()->Table("LAST_UPDATE")).str()
+                                                   << cppdb::row;
 
-                                    if (!r.empty()) {
-                                        string lastUpdateDate;
-                                        string lastUpdateTime;
-                                        r >> lastUpdateDate >> lastUpdateTime;
+                                        if (!r.empty()) {
+                                            string lastUpdateDate;
+                                            string lastUpdateTime;
+                                            r >> lastUpdateDate >> lastUpdateTime;
 
-                                        if (lastUpdateDate == date && lastUpdateTime == time) {
-                                            guard.rollback();
-                                            return;
+                                            if (lastUpdateDate == date && lastUpdateTime == time) {
+                                                guard.rollback();
+                                                return;
+                                            }
                                         }
+                                    } catch (...) {
                                     }
 
                                     break;

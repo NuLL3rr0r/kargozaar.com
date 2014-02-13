@@ -110,6 +110,8 @@ void PublicAPIResource::Impl::GetLatestData(std::string &out_date, std::string &
     out_titles.clear();
     out_data.clear();
 
+    cppdb::transaction guard(RT::DB()->SQL());
+
     cppdb::result r = RT::DB()->SQL()
             << (boost::format("SELECT date, time"
                               " FROM %1%"
@@ -155,6 +157,8 @@ void PublicAPIResource::Impl::GetLatestData(std::string &out_date, std::string &
         }
         ++rowId;
     }
+
+    guard.rollback();
 }
 
 void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
@@ -170,14 +174,14 @@ void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
     Table_t data;
     GetLatestData(date, time, titles, data);
 
-    tree.put(L"StockMarket.header.date", WString(date).value());
-    tree.put(L"StockMarket.header.time", WString(time).value());
+    tree.put(L"StockMarket.date", WString(date).value());
+    tree.put(L"StockMarket.time", WString(time).value());
 
     boost::property_tree::wptree titlesTree;
     for (Row_t::const_iterator it = titles.begin(); it != titles.end(); ++it) {
         boost::property_tree::wptree nameTree;
         nameTree.put(L"", WString(*it).value());
-        titlesTree.add_child(L"name", nameTree);
+        titlesTree.add_child(L"n", nameTree);
     }
     tree.add_child(L"StockMarket.titles", titlesTree);
 
@@ -187,9 +191,9 @@ void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
         for (Row_t::const_iterator rowIt = (*it).begin(); rowIt != (*it).end(); ++rowIt) {
             boost::property_tree::wptree colTree;
             colTree.put(L"", WString(*rowIt).value());
-            rowTree.add_child(L"col", colTree);
+            rowTree.add_child(L"c", colTree);
         }
-        dataTree.add_child(L"rows", rowTree);
+        dataTree.add_child(L"r", rowTree);
     }
     tree.add_child(L"StockMarket.data", dataTree);
 
@@ -211,14 +215,14 @@ void PublicAPIResource::Impl::LatestDataXML(std::wstring &out_response)
     Table_t data;
     GetLatestData(date, time, titles, data);
 
-    tree.put(L"StockMarket.header.date", WString(date).value());
-    tree.put(L"StockMarket.header.time", WString(time).value());
+    tree.put(L"StockMarket.date", WString(date).value());
+    tree.put(L"StockMarket.time", WString(time).value());
 
     boost::property_tree::wptree titlesTree;
     for (Row_t::const_iterator it = titles.begin(); it != titles.end(); ++it) {
         boost::property_tree::wptree nameTree;
         nameTree.put(L"", WString(*it).value());
-        titlesTree.add_child(L"name", nameTree);
+        titlesTree.add_child(L"n", nameTree);
     }
     tree.add_child(L"StockMarket.titles", titlesTree);
 
@@ -228,9 +232,9 @@ void PublicAPIResource::Impl::LatestDataXML(std::wstring &out_response)
         for (Row_t::const_iterator rowIt = (*it).begin(); rowIt != (*it).end(); ++rowIt) {
             boost::property_tree::wptree colTree;
             colTree.put(L"", WString(*rowIt).value());
-            rowTree.add_child(L"col", colTree);
+            rowTree.add_child(L"c", colTree);
         }
-        dataTree.add_child(L"rows", rowTree);
+        dataTree.add_child(L"r", rowTree);
     }
     tree.add_child(L"StockMarket.data", dataTree);
 
