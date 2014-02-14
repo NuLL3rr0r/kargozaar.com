@@ -176,7 +176,7 @@ void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
 
     tree.put(L"StockMarket.version.major", "1");
     tree.put(L"StockMarket.version.minor", "0");
-    tree.put(L"StockMarket.version.compat.minor", "1");
+    tree.put(L"StockMarket.version.compat.major", "1");
     tree.put(L"StockMarket.version.compat.minor", "0");
 
     tree.put(L"StockMarket.date", WString(date).value());
