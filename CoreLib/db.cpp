@@ -24,7 +24,7 @@ struct DB::Impl
 
 #ifdef CORELIB_STATIC
 extern "C" {
-    cppdb::backend::connection *cppdb_sqlite3_get_connection(cppdb::connection_info const &);
+cppdb::backend::connection *cppdb_sqlite3_get_connection(cppdb::connection_info const &);
 }
 #endif  // defined ( CORELIB_STATIC )
 
@@ -73,15 +73,21 @@ cppdb::session &DB::SQL()
 void DB::CreateTable(const std::string &table, const std::string &fields)
 {
     m_pimpl->SQL << "CREATE TABLE IF NOT EXISTS [" + table + "] ("
-                 + fields
-                 + ");"
-              << exec;
+                    + fields
+                    + ");"
+                 << exec;
 }
 
 void DB::DropTable(const std::string &table)
 {
     m_pimpl->SQL << "DROP TABLE IF EXISTS [" + table + "];"
-              << exec;
+                 << exec;
+}
+
+void DB::RenameTable(const std::string &table, const std::string &newTable)
+{
+    m_pimpl->SQL << "ALTER TABLE [" + table + "] RENAME TO [" +  newTable + "];"
+                 << exec;
 }
 
 void DB::Insert(const std::string &table, const std::string &fields, const int count, ...)
@@ -97,8 +103,8 @@ void DB::Insert(const std::string &table, const std::string &fields, const int c
     }
 
     statement stat = m_pimpl->SQL << "INSERT OR IGNORE INTO [" + table + "] "
-                                  "(" + fields + ") "
-                                  "VALUES (" + ph + ");";
+                                     "(" + fields + ") "
+                                     "VALUES (" + ph + ");";
 
     for(int i = 0; i < count; ++i) {
         stat.bind(va_arg(args, char*));
@@ -116,8 +122,8 @@ void DB::Update(const std::string &table, const std::string &where, const std::s
     va_start(args, count);
 
     statement stat = m_pimpl->SQL << "UPDATE [" + table + "] "
-                                  "SET " + set + " "
-                                  "WHERE " + where + "=?;";
+                                     "SET " + set + " "
+                                     "WHERE " + where + "=?;";
 
     for(int i = 0; i < count; ++i) {
         stat.bind(va_arg(args, char*));
@@ -133,9 +139,9 @@ void DB::Update(const std::string &table, const std::string &where, const std::s
 void DB::Delete(const std::string &table, const std::string &where, const std::string &value)
 {
     m_pimpl->SQL << "DELETE FROM [" + table + "] "
-                 "WHERE " + where + "=?;"
-              << value
-              << exec;
+                    "WHERE " + where + "=?;"
+                 << value
+                 << exec;
 }
 
 DB::Impl::Impl()

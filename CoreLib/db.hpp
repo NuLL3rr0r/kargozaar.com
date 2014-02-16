@@ -30,6 +30,7 @@ public:
 
     void CreateTable(const std::string &table, const std::string &fields);
     void DropTable(const std::string &table);
+    void RenameTable(const std::string &table, const std::string &newTable);
 
     void Insert(const std::string &table, const std::string &fields, const int count, ...);
     void Update(const std::string &table, const std::string &where, const std::string &value,

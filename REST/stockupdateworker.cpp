@@ -345,6 +345,30 @@ void StockUpdateWorker::Impl::Update()
                                             if (lastUpdateDate == date && lastUpdateTime == time) {
                                                 guard.rollback();
                                                 return;
+                                            } else {
+                                                if (lastUpdateDate != date) {
+                                                    std::string archiveDataTitlesTableName(
+                                                                RT::DBTables()->TableFromDate("DATA_TITLES", lastUpdateDate));
+                                                    std::string archiveStockDataTableName(
+                                                                RT::DBTables()->TableFromDate("STOCK_DATA", lastUpdateDate));
+
+                                                    RT::DB()->RenameTable(
+                                                                RT::DBTables()->Table("STOCK_DATA"),
+                                                                archiveStockDataTableName
+                                                                );
+                                                    RT::DB()->RenameTable(
+                                                                RT::DBTables()->Table("DATA_TITLES"),
+                                                                archiveDataTitlesTableName
+                                                                );
+
+                                                    RT::DB()->Insert(RT::DBTables()->Table("ARCHIVE"),
+                                                                     "date, time, datatitlestbl, stockdatatbl ", 4,
+                                                                     lastUpdateDate.c_str(),
+                                                                     lastUpdateTime.c_str(),
+                                                                     archiveDataTitlesTableName.c_str(),
+                                                                     archiveStockDataTableName.c_str()
+                                                                     );
+                                                }
                                             }
                                         }
                                     } catch (...) {

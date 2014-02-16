@@ -1,3 +1,5 @@
+#include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
 #include <unordered_map>
 #include <CoreLib/make_unique.hpp>
 #include <CoreLib/db.hpp>
@@ -22,7 +24,8 @@ struct DBTables::Impl
 
 void DBTables::InitTables()
 {
-
+    RT::DB()->CreateTable(RT::DBTables()->Table("ARCHIVE"),
+                          RT::DBTables()->Fields("ARCHIVE"));
 }
 
 DBTables::DBTables() :
@@ -43,6 +46,13 @@ string DBTables::Table(const std::string &id)
         LOG_ERROR("INVALID_TABLE_ID", id);
         return "{?}";
     }
+}
+
+string DBTables::TableFromDate(const std::string &id, const std::string &date)
+{
+    return  (boost::format("archive__%1%__%2%")
+             % Table(id)
+             % boost::replace_all_copy(date, "/", "_")).str();
 }
 
 string DBTables::Fields(const std::string &id)
@@ -75,6 +85,7 @@ void DBTables::Impl::InitHashes()
     TablesHash["LAST_UPDATE"] = "lastupdate";
     TablesHash["DATA_TITLES"] = "datatitles";
     TablesHash["STOCK_DATA"] = "stockdata";
+    TablesHash["ARCHIVE"] = "archive";
 
     FieldsHash["LAST_UPDATE"] =
             " date TEXT NOT NULL, "
@@ -84,5 +95,12 @@ void DBTables::Impl::InitHashes()
             " id TEXT NOT NULL, "
             " title TEXT NOT NULL, "
             " PRIMARY KEY ( id ) ";
+
+    FieldsHash["ARCHIVE"] =
+            " date TEXT NOT NULL, "
+            " time TEXT NOT NULL, "
+            " datatitlestbl TEXT NOT NULL, "
+            " stockdatatbl TEXT NOT NULL, "
+            " PRIMARY KEY ( date ) ";
 }
 
