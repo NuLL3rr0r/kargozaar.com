@@ -20,12 +20,12 @@ cd build
 #   * ClangNativeMinSizeRel
 #   * ClangNativeMaxSpeedRel
 
-sudo cmake -DCMAKE_BUILD_TYPE=ClangNativeMaxSpeedRel -DSERVER_ROOT_DIR=/srv/stockmarket.ir ../
+sudo cmake -DCMAKE_BUILD_TYPE=ClangNativeMaxSpeedRel -DSERVER_ROOT_DIR=/srv/kargozaar.com ../
 
 # -j<NUMBER_OF_CPU_CORES + 1>
 sudo make -j5 install
 
-# Then set the correct permissions on /srv/stockmarket.ir
+# Then set the correct permissions on /srv/kargozaar.com
 ############################# HOW TO BUILD ///////
 
 
@@ -34,10 +34,10 @@ sudo make -j5 install
     "apps" :
     [
         {
-            "app"     :  "/srv/stockmarket.ir/www/stock-market.rest",
-            "config"  :  "/srv/stockmarket.ir/etc/wt_config.xml",
-            "socket"  :  "/srv/stockmarket.ir/tmp/stockmarket.ir.socket",
-            "workdir" :  "/srv/stockmarket.ir/www/"
+            "app"     :  "/srv/kargozaar.com/www/stock-market.rest",
+            "config"  :  "/srv/kargozaar.com/etc/wt_config.xml",
+            "socket"  :  "/srv/kargozaar.com/tmp/kargozaar.com.socket",
+            "workdir" :  "/srv/kargozaar.com/www/"
         }
     ]
 }
@@ -46,17 +46,32 @@ sudo make -j5 install
 
 ############################# NGINX VHOST ///////
 server {
+    server_name  kargozaar.com;
+    rewrite ^(.*) http://www.kargozaar.com$1 permanent;
+
+    # CloudFlare
+    include /srv/.nginx/conf/cloudflare;
+}
+
+server {
     listen  80;
-    server_name   www.stockmarket.ir;
-    error_log     /srv/stockmarket.ir/log/www_error_log;
-    access_log    /srv/stockmarket.ir/log/www_access_log;
+    server_name   www.kargozaar.com;
+    error_log     /srv/kargozaar.com/log/www_error_log;
+    access_log    /srv/kargozaar.com/log/www_access_log;
 
-    root    /srv/stockmarket.ir/www/;
-    index stock-market.rest;
-    fastcgi_index stock-market.rest;
+    root           /srv/kargozaar.com/www/;
+    index          index.html index.php;
+    fastcgi_index  index.php;
 
+    location ~ ^.+\.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_param  SCRIPT_FILENAME  /srv/kargozaar.com/www$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    # RESTful web service
     location /stock-market.rest {
-        fastcgi_pass   unix:/srv/stockmarket.ir/tmp/stockmarket.ir.socket;
+        fastcgi_pass   unix:/srv/kargozaar.com/tmp/kargozaar.com.socket;
 
         fastcgi_param  QUERY_STRING       $query_string;
         fastcgi_param  REQUEST_METHOD     $request_method;
@@ -67,7 +82,7 @@ server {
             set $apache_path_info /$1;
         }
 
-        fastcgi_param  SCRIPT_NAME        /stockmarket.ir/www/stock-market.rest;
+        fastcgi_param  SCRIPT_NAME        /kargozaar.com/www/stock-market.rest;
         fastcgi_param  PATH_INFO          $apache_path_info;
         fastcgi_param  REQUEST_URI        $request_uri;
         fastcgi_param  DOCUMENT_URI       $document_uri;
@@ -83,7 +98,7 @@ server {
         fastcgi_param  SERVER_PORT        $server_port;
         fastcgi_param  SERVER_NAME        $server_name;
     }
-
+	
     # Error Pages
     include /srv/.nginx/conf/error;
 
@@ -94,14 +109,14 @@ server {
 
 ############################# NGINX LOCAL dotCONF ///////
     location /stock-market.rest(?<path_info>/.*|$) {
-        fastcgi_pass   unix:/srv/stockmarket.ir/tmp/stockmarket.ir.socket;
+        fastcgi_pass   unix:/srv/kargozaar.com/tmp/kargozaar.com.socket;
 
         fastcgi_param  QUERY_STRING       $query_string;
         fastcgi_param  REQUEST_METHOD     $request_method;
         fastcgi_param  CONTENT_TYPE       $content_type;
         fastcgi_param  CONTENT_LENGTH     $content_length;
 
-        fastcgi_param  SCRIPT_NAME        /stockmarket.ir/www/stock-market.rest;
+        fastcgi_param  SCRIPT_NAME        /kargozaar.com/www/stock-market.rest;
         fastcgi_param  PATH_INFO    	  $path_info;
         fastcgi_param  REQUEST_URI        $request_uri;
         fastcgi_param  DOCUMENT_URI       $document_uri;
