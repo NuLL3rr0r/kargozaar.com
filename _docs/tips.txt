@@ -69,6 +69,8 @@ server {
         include        fastcgi_params;
     }
 
+    merge_slashes on;
+
     # RESTful web service
     location /stock-market.rest {
         fastcgi_pass   unix:/srv/kargozaar.com/tmp/kargozaar.com.socket;
@@ -108,6 +110,8 @@ server {
 ############################# NGINX VHOST ///////
 
 ############################# NGINX LOCAL dotCONF ///////
+    merge_slashes on;
+
     location /stock-market.rest(?<path_info>/.*|$) {
         fastcgi_pass   unix:/srv/kargozaar.com/tmp/kargozaar.com.socket;
 
