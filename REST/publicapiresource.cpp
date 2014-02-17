@@ -82,10 +82,10 @@ void PublicAPIResource::handleRequest(const Wt::Http::Request &request, Wt::Http
                 m_pimpl->DataByDateJSON(args[0], outResponse);
                 PrintJSON(response, outResponse);
 
-            } else if (uriTemplate == DataByDateJSON_URI_TEMPLATE) {
+            } else if (uriTemplate == DataByDateXML_URI_TEMPLATE) {
 
                 m_pimpl->DataByDateXML(args[0], outResponse);
-                PrintJSON(response, outResponse);
+                PrintXML(response, outResponse);
 
             } else if (uriTemplate == LatestDataJSON_URI_TEMPLATE) {
 
