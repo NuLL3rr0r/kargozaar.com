@@ -235,23 +235,33 @@ Crypto::~Crypto()
 
 bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText)
 {
-    Crypto::Encrypt(plainText, out_encodedText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+    return Crypto::Encrypt(plainText, out_encodedText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
 }
 
 bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
                      std::string &out_error)
 {
-    Crypto::Encrypt(plainText, out_encodedText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+    return Crypto::Encrypt(plainText, out_encodedText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
 }
 
 bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText)
 {
-    Crypto::Decrypt(cipherText, out_recoveredText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+    return Crypto::Decrypt(cipherText, out_recoveredText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
 }
 
 bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText,
                      std::string &out_error)
 {
-    Crypto::Encrypt(cipherText, out_recoveredText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+    return Crypto::Encrypt(cipherText, out_recoveredText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+}
+
+Crypto::Impl::Impl()
+{
+}
+
+Crypto::Impl::~Impl()
+{
+    delete IV;
+    delete Key;
 }
 
