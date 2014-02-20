@@ -1,4 +1,5 @@
 #include <map>
+#include <vector>
 #include <utility>
 #include <cstddef>
 #include <boost/algorithm/string.hpp>
