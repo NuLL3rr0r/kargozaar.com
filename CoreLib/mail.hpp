@@ -2,6 +2,7 @@
 #define MAILER_HPP
 
 
+#include <memory>
 #include <string>
 #include <vector>
 

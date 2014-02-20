@@ -1,10 +1,9 @@
 #include <stdexcept>
-
+#include <cstring>
 #if defined ( _WIN32 )
 #include <windows.h>
 //#include <cryptopp/dll.h>     // msvc-shared only
 #endif  // defined ( _WIN32 )
-
 #include <cryptopp/aes.h>
 #include <cryptopp/ccm.h>
 #include <cryptopp/cryptlib.h>
@@ -15,6 +14,7 @@
 #include <b64/encode.h>
 #include "crypto.hpp"
 #include "log.hpp"
+#include "make_unique.hpp"
 
 
 #define     UNKNOWN_ERROR           "CoreLib::Crypto unknown error!"
@@ -27,39 +27,31 @@ using namespace CoreLib;
 
 struct Crypto::Impl
 {
-    // Use this nice HEX/ASCII converter and your editor's replace dialog,
-    // to create your own Key and IV.
-    // http://www.dolcevie.com/js/converter.html
+    Crypto::Byte_t *Key;
+    std::size_t KeyLen;
+    Crypto::Byte_t *IV;
+    std::size_t IVLen;
 
-    static constexpr unsigned char KEY[] = {
-        0x4e, 0x40, 0x21, 0x6b, 0x21, 0x30, 0x0, 0x2d, 0x40, 0x6b, 0x23, 0x48, 0x2f, 0x2e, 0x3f, 0x71
-    };
-
-    static constexpr unsigned char IV[] = {
-        0x53, 0x23, 0x33, 0x54, 0x34, 0x5f, 0x2b, 0x52, 0x33, 0x40, 0x48, 0x3f, 0x2e, 0x71, 0x0, 0x2f
-    };
+    Impl();
+    ~Impl();
 };
 
-bool Crypto::Encrypt(const char *plainText, std::string &out_encodedText)
+bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
+                     const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen)
 {
     string err;
-    return Encrypt(plainText, out_encodedText, err);
+    return Crypto::Encrypt(plainText.c_str(), out_encodedText, err, key, keyLen, iv, ivLen);
 }
 
-bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText)
-{
-    string err;
-    return Encrypt(plainText.c_str(), out_encodedText, err);
-}
-
-bool Crypto::Encrypt(const char *plainText, std::string &out_encodedText,
-                     std::string &out_error)
+bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
+                     std::string &out_error,
+                     const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen)
 {
     try {
         string cipher;
 
         CBC_Mode<AES>::Encryption enc;
-        enc.SetKeyWithIV(Impl::KEY, sizeof(Impl::KEY), Impl::IV, sizeof(Impl::IV));
+        enc.SetKeyWithIV(key, keyLen, iv, ivLen);
 
         cipher.clear();
         StringSource(plainText, true,
@@ -89,32 +81,22 @@ bool Crypto::Encrypt(const char *plainText, std::string &out_encodedText,
     return false;
 }
 
-bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
-                     std::string &out_error)
-{
-    return Encrypt(plainText.c_str(), out_encodedText, out_error);
-}
-
-bool Crypto::Decrypt(const char *cipherText, std::string &out_recoveredText)
+bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText,
+                     const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen)
 {
     string err;
-    return Decrypt(cipherText, out_recoveredText, err);
+    return Crypto::Decrypt(cipherText.c_str(), out_recoveredText, err, key, keyLen, iv, ivLen);
 }
 
-bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText)
-{
-    string err;
-    return Decrypt(cipherText.c_str(), out_recoveredText, err);
-}
-
-bool Crypto::Decrypt(const char *cipherText, std::string &out_recoveredText,
-                     std::string &out_error)
+bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText,
+                     std::string &out_error,
+                     const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen)
 {
     try {
         string cipher;
 
         CBC_Mode<AES>::Decryption dec;
-        dec.SetKeyWithIV(Impl::KEY, sizeof(Impl::KEY), Impl::IV, sizeof(Impl::IV));
+        dec.SetKeyWithIV(key, keyLen, iv, ivLen);
 
         cipher.clear();
         StringSource(cipherText, true, new HexDecoder(new StringSink(cipher)));
@@ -142,12 +124,6 @@ bool Crypto::Decrypt(const char *cipherText, std::string &out_recoveredText,
     }
 
     return false;
-}
-
-bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText,
-                     std::string &out_error)
-{
-    return Decrypt(cipherText.c_str(), out_recoveredText, out_error);
 }
 
 
@@ -240,5 +216,42 @@ void Crypto::Base64Encode(std::istream &inputStream, std::ostream &outputStream)
 {
     base64::encoder encoder;
     encoder.encode(inputStream, outputStream);
+}
+
+Crypto::Crypto(const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen) :
+    m_pimpl(std::make_unique<Crypto::Impl>())
+{
+    memcpy(m_pimpl->Key, key, keyLen);
+    memcpy(m_pimpl->IV, iv, ivLen);
+
+    m_pimpl->KeyLen = keyLen;
+    m_pimpl->IVLen = ivLen;
+}
+
+Crypto::~Crypto()
+{
+
+}
+
+bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText)
+{
+    Crypto::Encrypt(plainText, out_encodedText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+}
+
+bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
+                     std::string &out_error)
+{
+    Crypto::Encrypt(plainText, out_encodedText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+}
+
+bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText)
+{
+    Crypto::Decrypt(cipherText, out_recoveredText, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
+}
+
+bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredText,
+                     std::string &out_error)
+{
+    Crypto::Encrypt(cipherText, out_recoveredText, out_error, m_pimpl->Key, m_pimpl->KeyLen, m_pimpl->IV, m_pimpl->IVLen);
 }
 
