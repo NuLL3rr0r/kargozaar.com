@@ -1,3 +1,4 @@
+#include <vector>
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
 #include <boost/chrono/chrono.hpp>
@@ -323,9 +324,31 @@ void StockUpdateWorker::Impl::Update()
                                     boost::smatch result;
                                     if (boost::regex_search(v, result, eDate)) {
                                         date.assign(result[0].first, result[0].second);
+                                        if (date.size() != 10 || date.size() != 0) {
+                                            std::vector<std::string> vec;
+                                            boost::split(vec, date, boost::is_any_of(L"/"));
+                                            if (vec.size() == 3) {
+                                                date = (boost::format("%1%/%2%/%3%")
+                                                    % vec[0]
+                                                    % vec[1].size() == 2 ? vec[1] : (boost::format("0%1%") % vec[1]).str()
+                                                    % vec[2].size() == 2 ? vec[2] : (boost::format("0%1%") % vec[2]).str()
+                                                    ).str();
+                                            }
+                                        }
                                     }
                                     if (boost::regex_search(v, result, eTime)) {
                                         time.assign(result[0].first, result[0].second);
+                                        if (time.size() != 10 || time.size() != 0) {
+                                            std::vector<std::string> vec;
+                                            boost::split(vec, time, boost::is_any_of(L":"));
+                                            if (vec.size() == 3) {
+                                                time = (boost::format("%1%:%2%:%3%")
+                                                    % vec[0]
+                                                    % vec[1].size() == 2 ? vec[1] : (boost::format("0%1%") % vec[1]).str()
+                                                    % vec[2].size() == 2 ? vec[2] : (boost::format("0%1%") % vec[2]).str()
+                                                    ).str();
+                                            }
+                                        }
                                     }
 
                                     try {
