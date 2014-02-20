@@ -344,8 +344,8 @@ void StockUpdateWorker::Impl::Update()
                                             if (vec.size() == 3) {
                                                 time = (boost::format("%1%:%2%:%3%")
                                                     % vec[0]
-                                                    % vec[1].size() == 2 ? vec[1] : (boost::format("0%1%") % vec[1]).str()
-                                                    % vec[2].size() == 2 ? vec[2] : (boost::format("0%1%") % vec[2]).str()
+                                                    % (vec[1].size() == 2 ? vec[1] : (boost::format("0%1%") % vec[1]).str())
+                                                    % (vec[2].size() == 2 ? vec[2] : (boost::format("0%1%") % vec[2]).str())
                                                     ).str();
                                             }
                                         }
