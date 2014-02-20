@@ -317,8 +317,8 @@ void StockUpdateWorker::Impl::Update()
                                 if (rC == "A1" && tC == "s") {
                                     std::string v(sharedStrings[cNode.second.get<size_t>("v")]);
 
-                                    static const regex eDate("(13)[1-9][1-9][\\/](0[1-9]|1[012])[\\/](0[1-9]|[12][0-9]|3[01])");
-                                    static const regex eTime("[0-2][1-9][\\:][0-9][0-9][\\:][0-9][0-9]");
+                                    static const regex eDate("(13)[1-9][1-9][\\/](0[1-9]|1[012])|([1-9])[\\/](0[1-9]|[12][0-9]|3[01])|([1-9])");
+                                    static const regex eTime("[0-2][1-9][\\:]([0-9][0-9])|([0-9])[\\:]([0-9][0-9])|([0-9])");
 
                                     boost::smatch result;
                                     if (boost::regex_search(v, result, eDate)) {
