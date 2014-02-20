@@ -257,6 +257,7 @@ bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredTe
 
 Crypto::Impl::Impl()
 {
+
 }
 
 Crypto::Impl::~Impl()
