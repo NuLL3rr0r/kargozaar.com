@@ -1,5 +1,5 @@
-#ifndef CRYPTO_HPP
-#define CRYPTO_HPP
+#ifndef CORELIB_CRYPTO_HPP
+#define CORELIB_CRYPTO_HPP
 
 
 #include <memory>
@@ -58,5 +58,5 @@ public:
 };
 
 
-#endif /* CRYPTO_HPP */
+#endif /* CORELIB_CRYPTO_HPP */
 

@@ -1,5 +1,5 @@
+#include <algorithm>
 #include <stdexcept>
-#include <cstring>
 #if defined ( _WIN32 )
 #include <windows.h>
 //#include <cryptopp/dll.h>     // msvc-shared only
@@ -13,7 +13,6 @@
 #include <b64/decode.h>
 #include <b64/encode.h>
 #include "crypto.hpp"
-#include "log.hpp"
 #include "make_unique.hpp"
 
 
@@ -64,17 +63,14 @@ bool Crypto::Encrypt(const std::string &plainText, std::string &out_encodedText,
     }
 
     catch (const CryptoPP::Exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (const std::exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (...) {
-        LOG_ERROR(UNKNOWN_ERROR);
         out_error.assign(UNKNOWN_ERROR);
     }
 
@@ -109,17 +105,14 @@ bool Crypto::Decrypt(const std::string &cipherText, std::string &out_recoveredTe
     }
 
     catch (const CryptoPP::Exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (const std::exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (...) {
-        LOG_ERROR(UNKNOWN_ERROR);
         out_error.assign(UNKNOWN_ERROR);
     }
 
@@ -153,17 +146,14 @@ bool Crypto::GenerateHash(const char *text, std::string &out_digest,
     }
 
     catch (const CryptoPP::Exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (const std::exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (...) {
-        LOG_ERROR(UNKNOWN_ERROR);
         out_error.assign(UNKNOWN_ERROR);
     }
 
@@ -221,8 +211,11 @@ void Crypto::Base64Encode(std::istream &inputStream, std::ostream &outputStream)
 Crypto::Crypto(const Byte_t *key, std::size_t keyLen, const Byte_t *iv, std::size_t ivLen) :
     m_pimpl(std::make_unique<Crypto::Impl>())
 {
-    memcpy(m_pimpl->Key, key, keyLen);
-    memcpy(m_pimpl->IV, iv, ivLen);
+    m_pimpl->Key = new Byte_t[keyLen];
+    m_pimpl->IV = new Byte_t[ivLen];
+
+    std::copy(key, key + keyLen, m_pimpl->Key);
+    std::copy(iv, iv + ivLen, m_pimpl->IV);
 
     m_pimpl->KeyLen = keyLen;
     m_pimpl->IVLen = ivLen;

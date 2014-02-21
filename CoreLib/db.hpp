@@ -1,5 +1,5 @@
-#ifndef DB_HPP
-#define DB_HPP
+#ifndef CORELIB_DB_HPP
+#define CORELIB_DB_HPP
 
 
 #include <string>
@@ -39,5 +39,5 @@ public:
 };
 
 
-#endif /* DB_HPP */
+#endif /* CORELIB_DB_HPP */
 

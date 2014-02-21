@@ -1,5 +1,5 @@
-#ifndef MAKE_UNIQUE_HPP
-#define MAKE_UNIQUE_HPP
+#ifndef CORELIB_MAKE_UNIQUE_HPP
+#define CORELIB_MAKE_UNIQUE_HPP
 
 
 #include <memory>
@@ -14,6 +14,6 @@ namespace std {
 }
 
 
-#endif /* MAKE_UNIQUE_HPP */
+#endif /* CORELIB_MAKE_UNIQUE_HPP */
 
 

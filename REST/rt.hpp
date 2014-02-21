@@ -7,6 +7,7 @@
 #include "stockupdateworker.hpp"
 
 namespace CoreLib {
+    class Crypto;
     class DB;
 }
 
@@ -32,6 +33,8 @@ public:
     static CoreLib::DB *DB();
     static StockMarket::DBTables *DBTables();
     static StockMarket::StockUpdateWorker *StockUpdateWorker();
+    static CoreLib::Crypto *TokenClient();
+    static CoreLib::Crypto *TokenServer();
 };
 
 

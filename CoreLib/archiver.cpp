@@ -1,5 +1,4 @@
 #include <boost/format.hpp>
-#include <CoreLib/log.hpp>
 #include "archiver.hpp"
 #include "system.hpp"
 
@@ -28,7 +27,6 @@ bool Archiver::UnZip(const std::string &archive, const std::string &extractionPa
     if (!rc) {
         out_error.assign((boost::format("Archiver::UnZip: Could not extract '%1%' in %2%. ")
                           % archive % extractionPath).str());
-        LOG_ERROR(out_error);
         return false;
     }
 

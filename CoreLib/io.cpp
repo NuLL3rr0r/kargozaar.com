@@ -1,9 +1,9 @@
+#include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include "io.hpp"
-#include "log.hpp"
 
 using namespace std;
 using namespace boost;
@@ -17,10 +17,9 @@ bool IO::DirExists(const string &path)
         return BFS::exists(path);
     }
     catch(const BFS::filesystem_error &ex) {
-        LOG_ERROR(ex.what());
+        (void)ex;
     }
     catch(...) {
-        LOG_ERROR("Unknown file erase error.", path);
     }
 
     return false;
@@ -59,10 +58,9 @@ bool IO::EraseDir(const string &path)
         return true;
     }
     catch(const BFS::filesystem_error &ex) {
-        LOG_ERROR(ex.what());
+        (void)ex;
     }
     catch(...) {
-        LOG_ERROR("Unknown file erase error.", path);
     }
 
     return false;
@@ -76,10 +74,9 @@ bool IO::EraseFile(const string &path)
         return true;
     }
     catch(const BFS::filesystem_error &ex) {
-        LOG_ERROR(ex.what());
+        (void)ex;
     }
     catch(...) {
-        LOG_ERROR("Unknown file erase error.", path);
     }
 
     return false;

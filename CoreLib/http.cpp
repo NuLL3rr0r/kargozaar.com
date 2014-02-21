@@ -4,7 +4,6 @@
 #include <curlpp/Easy.hpp>
 #include <curlpp/Exception.hpp>
 #include <curlpp/Options.hpp>
-#include <CoreLib/log.hpp>
 #include "http.hpp"
 
 #define     UNKNOWN_ERROR           "REST::HTTP unknown error!"
@@ -54,7 +53,6 @@ bool HTTP::DownloadFile(const std::string &remoteAddr, const std::string &localP
         std::ofstream ofs(localPath, std::ios::binary);
 
         if (!ofs.is_open()) {
-            LOG_ERROR(OPEN_FILE_ERROR);
             out_error.assign(OPEN_FILE_ERROR);
             return false;
         }
@@ -70,22 +68,18 @@ bool HTTP::DownloadFile(const std::string &remoteAddr, const std::string &localP
     }
 
     catch (const curlpp::RuntimeError &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (const curlpp::LogicError &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (const std::runtime_error &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (...) {
-        LOG_ERROR(UNKNOWN_ERROR);
         out_error.assign(UNKNOWN_ERROR);
     }
 

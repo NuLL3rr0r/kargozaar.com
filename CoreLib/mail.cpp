@@ -9,7 +9,6 @@
 #endif  // defined (_WIN32)
 
 #include "mail.hpp"
-#include "log.hpp"
 #include "make_unique.hpp"
 
 
@@ -151,17 +150,14 @@ bool Mail::Send(std::string &out_error) const
     }
 
     catch (vmime::exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch(std::exception &ex) {
-        LOG_ERROR(ex.what());
         out_error.assign(ex.what());
     }
 
     catch (...) {
-        LOG_ERROR(UNKNOWN_ERROR);
         out_error.assign(UNKNOWN_ERROR);
     }
 

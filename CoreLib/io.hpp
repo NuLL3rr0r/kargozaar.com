@@ -1,5 +1,5 @@
-#ifndef IO_HPP
-#define IO_HPP
+#ifndef CORELIB_IO_HPP
+#define CORELIB_IO_HPP
 
 
 #include <string>
@@ -20,6 +20,6 @@ public:
 };
 
 
-#endif /* IO_HPP */
+#endif /* CORELIB_IO_HPP */
 
 

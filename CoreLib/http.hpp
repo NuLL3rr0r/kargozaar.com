@@ -1,5 +1,5 @@
-#ifndef HTTP_HPP
-#define HTTP_HPP
+#ifndef CORELIB_HTTP_HPP
+#define CORELIB_HTTP_HPP
 
 
 #include <string>
@@ -17,5 +17,5 @@ public:
 };
 
 
-#endif /* HTTP_HPP */
+#endif /* CORELIB_HTTP_HPP */
 

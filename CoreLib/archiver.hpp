@@ -1,5 +1,5 @@
-#ifndef ARCHIVER_HPP
-#define ARCHIVER_HPP
+#ifndef CORELIB_ARCHIVER_HPP
+#define CORELIB_ARCHIVER_HPP
 
 
 #include <string>
@@ -17,5 +17,5 @@ public:
 };
 
 
-#endif /* ARCHIVER_HPP */
+#endif /* CORELIB_ARCHIVER_HPP */
 

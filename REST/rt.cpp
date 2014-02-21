@@ -1,4 +1,5 @@
 #include <boost/filesystem/path.hpp>
+#include <CoreLib/crypto.hpp>
 #include <CoreLib/db.hpp>
 #include <CoreLib/make_unique.hpp>
 #include <CoreLib/log.hpp>
@@ -11,6 +12,7 @@ using namespace StockMarket;
 struct RT::Impl
 {
     typedef std::unique_ptr<StorageStruct> Storage_ptr;
+    typedef std::unique_ptr<CoreLib::Crypto> Crypto_ptr;
     typedef std::unique_ptr<CoreLib::DB> DB_ptr;
     typedef std::unique_ptr<StockMarket::DBTables> DBTables_ptr;
     typedef std::unique_ptr<StockMarket::StockUpdateWorker> StockUpdateWorker_ptr;
@@ -26,6 +28,12 @@ struct RT::Impl
 
     std::mutex StockUpdateWorkerMutex;
     StockUpdateWorker_ptr StockUpdateWorkerInstance;
+
+    std::mutex TokenClientMutex;
+    Crypto_ptr TokenClientInstance;
+
+    std::mutex TokenServerMutex;
+    Crypto_ptr TokenServerInstance;
 
     Impl();
     ~Impl();
@@ -94,6 +102,57 @@ StockMarket::StockUpdateWorker *RT::StockUpdateWorker()
     return s_pimpl->StockUpdateWorkerInstance.get();
 }
 
+CoreLib::Crypto *RT::TokenClient()
+{
+    lock_guard<mutex> lock(s_pimpl->TokenClientMutex);
+    (void)lock;
+
+    if (s_pimpl->TokenClientInstance == nullptr) {
+        // Use this nice HEX/ASCII converter and your editor's replace dialog,
+        // to create your own Key and IV.
+        // http://www.dolcevie.com/js/converter.html
+
+        // `7mDbC7kKy1/.?#$
+        static constexpr CoreLib::Crypto::Byte_t KEY[] = {
+            0x60, 0x37, 0x6d, 0x44, 0x62, 0x43, 0x37, 0x6b, 0x4b, 0x79, 0x31, 0x2f, 0x2e, 0x3f, 0x23, 0x24
+        };
+
+        // `imVbC7nMt1/.?@@
+        static constexpr CoreLib::Crypto::Byte_t IV[] = {
+            0x60, 0x69, 0x6d, 0x56, 0x62, 0x43, 0x37, 0x6e, 0x4d, 0x74, 0x31, 0x2f, 0x2e, 0x3f, 0x40, 0x40
+        };
+
+        s_pimpl->TokenClientInstance = std::make_unique<CoreLib::Crypto>(KEY, sizeof(KEY), IV, sizeof(IV));
+    }
+
+    return s_pimpl->TokenClientInstance.get();
+}
+
+CoreLib::Crypto *RT::TokenServer()
+{
+    lock_guard<mutex> lock(s_pimpl->TokenServerMutex);
+    (void)lock;
+
+    if (s_pimpl->TokenServerInstance == nullptr) {
+        // Use this nice HEX/ASCII converter and your editor's replace dialog,
+        // to create your own Key and IV.
+        // http://www.dolcevie.com/js/converter.html
+
+        // `7mbS7wkKy3/.?er
+        static constexpr CoreLib::Crypto::Byte_t KEY[] = {
+            0x60, 0x37, 0x6d, 0x62, 0x53, 0x37, 0x77, 0x6b, 0x4b, 0x79, 0x33, 0x2f, 0x2e, 0x3f, 0x65, 0x72
+        };
+
+        // `imVS7wkoP3/.?3r
+        static constexpr CoreLib::Crypto::Byte_t IV[] = {
+            0x60, 0x69, 0x6d, 0x56, 0x53, 0x37, 0x77, 0x6b, 0x6f, 0x50, 0x33, 0x2f, 0x2e, 0x3f, 0x33, 0x72
+        };
+
+        s_pimpl->TokenServerInstance = std::make_unique<CoreLib::Crypto>(KEY, sizeof(KEY), IV, sizeof(IV));
+    }
+
+    return s_pimpl->TokenServerInstance.get();
+}
 
 RT::Impl::Impl()
 {

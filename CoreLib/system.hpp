@@ -1,5 +1,5 @@
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#ifndef CORELIB_SYSTEM_HPP
+#define CORELIB_SYSTEM_HPP
 
 
 #include <string>
@@ -34,6 +34,6 @@ public:
 };
 
 
-#endif /* SYSTEM_HPP */
+#endif /* CORELIB_SYSTEM_HPP */
 
 

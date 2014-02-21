@@ -1,5 +1,5 @@
-#ifndef EXCEPTION_HPP
-#define EXCEPTION_HPP
+#ifndef CORELIB_EXCEPTION_HPP
+#define CORELIB_EXCEPTION_HPP
 
 
 #include <stdexcept>
@@ -16,5 +16,5 @@ public:
 };
 
 
-#endif /* EXCEPTION_HPP */
+#endif /* CORELIB_EXCEPTION_HPP */
 

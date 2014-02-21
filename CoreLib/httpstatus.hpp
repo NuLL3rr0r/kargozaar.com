@@ -1,5 +1,5 @@
-#ifndef HTTP_STATUS
-#define HTTP_STATUS
+#ifndef CORELIB_HTTP_STATUS
+#define CORELIB_HTTP_STATUS
 
 
 #include <string>
@@ -63,5 +63,5 @@ public:
 };
 
 
-#endif /* HTTP_STATUS */
+#endif /* CORELIB_HTTP_STATUS */
 

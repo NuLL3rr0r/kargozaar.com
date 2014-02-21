@@ -33,7 +33,7 @@ std::wstring APIResource::GetHTTPStatusJSON(const CoreLib::HTTPStatus::HTTPStatu
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    tree.put(L"error", HTTPStatus::GetHTTPResponse(code));
+    tree.put(L"status", HTTPStatus::GetHTTPResponse(code));
 
     boost::property_tree::write_json(stream, tree);
 
@@ -45,7 +45,7 @@ std::wstring APIResource::GetHTTPStatusXML(const CoreLib::HTTPStatus::HTTPStatus
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    tree.put(L"error", HTTPStatus::GetHTTPResponse(code));
+    tree.put(L"status", HTTPStatus::GetHTTPResponse(code));
 
     boost::property_tree::write_xml(stream, tree);
 

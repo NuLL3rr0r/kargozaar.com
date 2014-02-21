@@ -1,5 +1,5 @@
-#ifndef LOG_HPP
-#define LOG_HPP
+#ifndef CORELIB_LOG_HPP
+#define CORELIB_LOG_HPP
 
 
 #include <fstream>
@@ -77,5 +77,5 @@ public:
     (CoreLib::Log(CoreLib::Log::EType::Fatal, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 
-#endif /* LOG_HPP */
+#endif /* CORELIB_LOG_HPP */
 
