@@ -142,6 +142,19 @@ IF ( BUILD_STOCKMARKET_REST )
                 WORLD_READ
             )
 
+            INSTALL ( DIRECTORY
+                "${WT_RESOURCES_DIR}"
+                DESTINATION "${SERVER_ROOT_DIR}/www"
+                FILE_PERMISSIONS
+                OWNER_READ
+                GROUP_READ
+                WORLD_READ
+                DIRECTORY_PERMISSIONS
+                OWNER_READ OWNER_EXECUTE
+                GROUP_READ GROUP_EXECUTE
+                WORLD_READ WORLD_EXECUTE
+            )
+
             INSTALL ( FILES
                 "${CMAKE_CURRENT_SOURCE_DIR}/resources/favicon.ico"
                 DESTINATION "${SERVER_ROOT_DIR}/www"
