@@ -1,0 +1,104 @@
+@charset "utf-8";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    background: #fff;
+}
+
+.dvNoScript {
+    font: normal normal normal 12px/1.5em Georgia, 'Times New Roman', Times, serif, Tahoma, arial, sans-serif, Geneva, Verdana;
+    letter-spacing: 0;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #F00;
+    background: #FFA4A4;
+    direction: rtl;
+    font-family: Tahoma;
+}
+
+a:link {
+    text-decoration: none;
+    color: #00F;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #00F;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #00F;
+}
+
+a:active {
+    text-decoration: none;
+    color: #00F;
+}
+
+.link {
+    text-decoration: none;
+    cursor: pointer;
+    color: #00F;
+}
+
+.boldText {
+    font-weight: bold;
+    color: #203070;
+}
+
+.boldTextErr {
+    font-weight: bold;
+    color: #900;
+}
+
+#Home {
+    position: relative;
+    margin: 0 auto;
+    widht: 100%;
+}
+
+#divHeader {
+    height: 70px;
+    border-bottom: 1px solid #bfbfbf;
+}
+
+#divSplash {
+    position: relative;
+    margin: 0 auto;
+    width: 960px;
+}
+
+#divSplashPic {
+    position: relative;
+    float: left;
+    background: url('splash.png') no-repeat;
+    width: 706px;
+    height: 375px;
+}
+
+#divSplashText {
+    position: relative;
+    float: right;
+    background: #09a45f;
+    widhth: 254;
+    height: 375px;
+}
+
+#divDownloads {
+    float: none;
+    clear: both;
+    position: relative;
+    margin: 0 auto;
+    width: 960px;
+    height: 220px;
+}
+
+#divStockTable {
+    position: relative;
+    margin: 0 auto;
+    width: 960px;
+}
+

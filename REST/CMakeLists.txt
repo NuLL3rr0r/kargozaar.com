@@ -1,5 +1,5 @@
 IF ( BUILD_STOCKMARKET_REST )
-    FILE ( GLOB STOCKMARKET_REST_SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp )
+    FILE ( GLOB STOCKMARKET_REST_SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp resources/*.css )
 
     SET ( STOCKMARKET_REST_BIN_FILE "${STOCKMARKET_REST_BIN_NAME}" )
 
@@ -157,6 +157,11 @@ IF ( BUILD_STOCKMARKET_REST )
 
             INSTALL ( FILES
                 "${CMAKE_CURRENT_SOURCE_DIR}/resources/favicon.ico"
+                "${CMAKE_CURRENT_SOURCE_DIR}/resources/home.css"
+                "${CMAKE_CURRENT_SOURCE_DIR}/resources/facebook.png"
+                "${CMAKE_CURRENT_SOURCE_DIR}/resources/twitter.png"
+                "${CMAKE_CURRENT_SOURCE_DIR}/resources/logo.png"
+                "${CMAKE_CURRENT_SOURCE_DIR}/resources/splash.png"
                 DESTINATION "${SERVER_ROOT_DIR}/www"
                 PERMISSIONS
                 OWNER_READ

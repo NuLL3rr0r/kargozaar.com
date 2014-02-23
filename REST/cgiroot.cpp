@@ -10,7 +10,7 @@
 #include "home.hpp"
 
 #define         UNKNOWN_ERROR       "CgiRoot::CgiRoot ** Uknown error!"
-#define         ALICE               L"Alice is not in Wonderland!!"
+#define         ALICE               L"<pre>Alice is not in Wonderland!!</pre>"
 
 using namespace std;
 using namespace Wt;
