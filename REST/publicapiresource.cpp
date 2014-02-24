@@ -42,15 +42,22 @@ struct PublicAPIResource::Impl
     typedef vector<vector<std::string> > Table_t;
     typedef vector<std::string> Row_t;
 
+    enum class OutputType : unsigned char {
+        JSON,
+        XML
+    };
+
     std::unique_ptr<StockMarket::ServiceContract> ServiceContractPtr;
 
     bool IsValidToken(const std::wstring &encryptedToken);
 
-    void GetDataTree(const std::string &dateId, const std::string &time,
+    void GetDataTree(const OutputType &outputType,
+                     const std::string &dateId, const std::string &time,
                      const Row_t &titles, const Table_t &data,
                      boost::property_tree::wptree &out_tree);
-    void GetDataByDate(const std::string &date, boost::property_tree::wptree &out_tree);
-    void GetLatestData(boost::property_tree::wptree &out_tree);
+    void GetDataByDate(const OutputType &outputType,
+                       const std::string &date, boost::property_tree::wptree &out_tree);
+    void GetLatestData(const OutputType &outputType, boost::property_tree::wptree &out_tree);
     void GetToken(boost::property_tree::wptree &out_tree);
 
     void DataByDateJSON(const std::wstring &date, std::wstring &out_response);
@@ -201,7 +208,8 @@ bool PublicAPIResource::Impl::IsValidToken(const std::wstring &encryptedToken)
     return true;
 }
 
-void PublicAPIResource::Impl::GetDataTree(const std::string &date, const std::string &time,
+void PublicAPIResource::Impl::GetDataTree(const OutputType &outputType,
+                                          const std::string &date, const std::string &time,
                                           const Row_t &titles, const Table_t &data,
                                           boost::property_tree::wptree &out_tree)
 {
@@ -217,7 +225,15 @@ void PublicAPIResource::Impl::GetDataTree(const std::string &date, const std::st
     for (Row_t::const_iterator it = titles.begin(); it != titles.end(); ++it) {
         boost::property_tree::wptree nameTree;
         nameTree.put(L"", WString(*it).value());
-        titlesTree.add_child(L"n", nameTree);
+
+        switch (outputType) {
+        case OutputType::JSON:
+            titlesTree.push_back(std::make_pair(L"", nameTree));
+            break;
+        case OutputType::XML:
+            titlesTree.add_child(L"n", nameTree);
+            break;
+        }
     }
     out_tree.add_child(L"StockMarket.titles", titlesTree);
 
@@ -227,14 +243,30 @@ void PublicAPIResource::Impl::GetDataTree(const std::string &date, const std::st
         for (Row_t::const_iterator rowIt = (*it).begin(); rowIt != (*it).end(); ++rowIt) {
             boost::property_tree::wptree colTree;
             colTree.put(L"", WString(*rowIt).value());
-            rowTree.add_child(L"c", colTree);
+
+            switch (outputType) {
+            case OutputType::JSON:
+                rowTree.push_back(std::make_pair(L"", colTree));
+                break;
+            case OutputType::XML:
+                rowTree.add_child(L"c", colTree);
+                break;
+            }
         }
-        dataTree.add_child(L"r", rowTree);
+
+        switch (outputType) {
+        case OutputType::JSON:
+            dataTree.push_back(std::make_pair(L"", rowTree));
+            break;
+        case OutputType::XML:
+            dataTree.add_child(L"r", rowTree);
+            break;
+        }
     }
     out_tree.add_child(L"StockMarket.data", dataTree);
 }
 
-void PublicAPIResource::Impl::GetDataByDate(const std::string &dateId,
+void PublicAPIResource::Impl::GetDataByDate(const OutputType &outputType, const std::string &dateId,
                                             boost::property_tree::wptree &out_tree)
 {
     out_tree.clear();
@@ -302,10 +334,11 @@ void PublicAPIResource::Impl::GetDataByDate(const std::string &dateId,
 
     guard.rollback();
 
-    GetDataTree(date, time, titles, data, out_tree);
+    GetDataTree(outputType, date, time, titles, data, out_tree);
 }
 
-void PublicAPIResource::Impl::GetLatestData(boost::property_tree::wptree &out_tree)
+void PublicAPIResource::Impl::GetLatestData(const OutputType &outputType,
+                                            boost::property_tree::wptree &out_tree)
 {
     out_tree.clear();
 
@@ -366,7 +399,7 @@ void PublicAPIResource::Impl::GetLatestData(boost::property_tree::wptree &out_tr
 
     guard.rollback();
 
-    GetDataTree(date, time, titles, data, out_tree);
+    GetDataTree(outputType, date, time, titles, data, out_tree);
 }
 
 void PublicAPIResource::Impl::GetToken(boost::property_tree::wptree &out_tree)
@@ -388,7 +421,7 @@ void PublicAPIResource::Impl::DataByDateJSON(const std::wstring &date, std::wstr
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    GetDataByDate(WString(date).toUTF8(), tree);
+    GetDataByDate(OutputType::JSON, WString(date).toUTF8(), tree);
 
     boost::property_tree::write_json(stream, tree);
 
@@ -402,7 +435,7 @@ void PublicAPIResource::Impl::DataByDateXML(const std::wstring &date, std::wstri
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    GetDataByDate(WString(date).toUTF8(), tree);
+    GetDataByDate(OutputType::XML, WString(date).toUTF8(), tree);
 
     boost::property_tree::write_xml(stream, tree);
 
@@ -416,7 +449,7 @@ void PublicAPIResource::Impl::LatestDataJSON(std::wstring &out_response)
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    GetLatestData(tree);
+    GetLatestData(OutputType::JSON, tree);
 
     boost::property_tree::write_json(stream, tree);
 
@@ -430,7 +463,7 @@ void PublicAPIResource::Impl::LatestDataXML(std::wstring &out_response)
     std::wstringstream stream;
     boost::property_tree::wptree tree;
 
-    GetLatestData(tree);
+    GetLatestData(OutputType::XML, tree);
 
     boost::property_tree::write_xml(stream, tree);
 
