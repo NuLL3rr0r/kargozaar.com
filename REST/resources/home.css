@@ -56,24 +56,65 @@ a:active {
 
 #Home {
     position: relative;
+    border: 0;
     margin: 0 auto;
     widht: 100%;
 }
 
+.divHorizontalSeparator {
+    border: 1px solid #bfbfbf;
+    float: none;
+    clear: both;
+}
+
 #divHeader {
+    position: relative;
+    border: 0;
+    margin: 0 auto;
+    width: 960px;
     height: 70px;
-    border-bottom: 1px solid #bfbfbf;
+    border: 0;
+}
+
+#divLogo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#divSocialMedia {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #divSplash {
     position: relative;
+    border: 0;
+    margin: 0 auto;
+    background: #09a45f;
+    width: 100%;
+    height: 375px;
+}
+
+#divSplashInner {
+    position: relative;
+    border: 0;
     margin: 0 auto;
     width: 960px;
+    height: 375px;
 }
 
 #divSplashPic {
     position: relative;
     float: left;
+    border: 0;
     background: url('splash.png') no-repeat;
     width: 706px;
     height: 375px;
@@ -82,23 +123,24 @@ a:active {
 #divSplashText {
     position: relative;
     float: right;
-    background: #09a45f;
-    widhth: 254;
+    border: 0;
+    width: 254px;
     height: 375px;
 }
 
 #divDownloads {
-    float: none;
-    clear: both;
     position: relative;
+    border: 0;
     margin: 0 auto;
     width: 960px;
-    height: 220px;
+    height: 120px;
 }
 
 #divStockTable {
     position: relative;
+    border: 0;
     margin: 0 auto;
     width: 960px;
 }
+
 
