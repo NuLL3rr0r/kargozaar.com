@@ -1,0 +1,95 @@
+    #region Crypto
+
+    public class Crypto
+    {
+        private static string ByteArrayToString(byte[] bytes)
+        {
+            return BitConverter.ToString(bytes).Replace("-", string.Empty);
+        }
+
+        private static byte[] StringToByteArray(String hex)
+        {
+            int charsCount = hex.Length / 2;
+            byte[] bytes = new byte[charsCount];
+            using (var sr = new StringReader(hex))
+            {
+                for (int i = 0; i < charsCount; i++)
+                    bytes[i] = Convert.ToByte(new string(new char[2] { (char)sr.Read(), (char)sr.Read() }), 16);
+            }
+            return bytes;
+        }
+
+        private static byte[] Encrypt(byte[] clearData, byte[] key, byte[] iv)
+        {
+            try
+            {
+                MemoryStream ms = new MemoryStream();
+
+                Rijndael alg = Rijndael.Create();
+                alg.Mode = CipherMode.CBC;
+                alg.Key = key;
+                alg.IV = iv;
+
+                CryptoStream cs = new CryptoStream(ms, alg.CreateEncryptor(), CryptoStreamMode.Write);
+
+                cs.Write(clearData, 0, clearData.Length);
+
+                cs.Close();
+
+                byte[] encryptedData = ms.ToArray();
+
+                return encryptedData;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                return (new byte[] { });
+            }
+            finally
+            {
+            }
+        }
+
+        private static byte[] Decrypt(byte[] cipherData, byte[] key, byte[] iv)
+        {
+            try
+            {
+                MemoryStream ms = new MemoryStream();
+
+                Rijndael alg = Rijndael.Create();
+                alg.Mode = CipherMode.CBC;
+                alg.Key = key;
+                alg.IV = iv;
+
+                CryptoStream cs = new CryptoStream(ms, alg.CreateDecryptor(), CryptoStreamMode.Write);
+
+                cs.Write(cipherData, 0, cipherData.Length);
+
+                cs.Close();
+
+                byte[] decryptedData = ms.ToArray();
+
+                return decryptedData;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                return (new byte[] { });
+            }
+            finally
+            {
+            }
+        }
+
+        public static string Encrypt(string clearText, byte[] key, byte[] iv)
+        {
+            return ByteArrayToString(Encrypt(StringToByteArray(clearText), key, iv));
+        }
+
+        public static string Decrypt(string cipherText, byte[] key, byte[] iv)
+        {
+            return ByteArrayToString(Decrypt(StringToByteArray(cipherText), key, iv));
+        }
+    }
+
+    #endregion
