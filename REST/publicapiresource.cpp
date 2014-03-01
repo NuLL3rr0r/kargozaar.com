@@ -1,5 +1,5 @@
+#include <chrono>
 #include <cmath>
-#include <ctime>
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
@@ -21,7 +21,7 @@
 #include "servicecontract.hpp"
 #include "xmlexception.hpp"
 
-#define     MAX_TOKEN_SECONDS_DIFFERENCE             10
+#define     MAX_TOKEN_MILLISECONDS_DIFFERENCE             10000
 
 #define     INVALID_TOKEN_ERROR                      L"INVALID_TOKEN"
 
@@ -190,8 +190,9 @@ PublicAPIResource::Impl::~Impl()
 
 bool PublicAPIResource::Impl::IsValidToken(const std::wstring &encryptedToken)
 {
-    time_t currentTime = time(NULL);
-    time_t token = 0;
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+
+    time_t token;
 
     try {
         std::string decryptedToken;
@@ -201,7 +202,8 @@ bool PublicAPIResource::Impl::IsValidToken(const std::wstring &encryptedToken)
         return false;
     }
 
-    if (std::abs(currentTime - token) > MAX_TOKEN_SECONDS_DIFFERENCE) {
+    if (std::abs(std::chrono::system_clock::to_time_t(now) - token)
+            > MAX_TOKEN_MILLISECONDS_DIFFERENCE) {
         return false;
     }
 
@@ -406,10 +408,12 @@ void PublicAPIResource::Impl::GetToken(boost::property_tree::wptree &out_tree)
 {
     out_tree.clear();
 
-    time_t currentTime = time(NULL);
+    std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<size_t, std::milli> millisecondsSinceEpoch =
+            std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
     std::string token;
-    RT::TokenServer()->Encrypt(lexical_cast<std::string>(currentTime), token);
+    RT::TokenServer()->Encrypt(lexical_cast<std::string>(millisecondsSinceEpoch.count()), token);
 
     out_tree.put(L"token", WString(token).value());
 }
