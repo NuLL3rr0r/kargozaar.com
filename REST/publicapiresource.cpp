@@ -408,14 +408,14 @@ void PublicAPIResource::Impl::GetToken(boost::property_tree::wptree &out_tree)
 {
     out_tree.clear();
 
-    std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::chrono::duration<size_t, std::milli> millisecondsSinceEpoch =
             std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
     std::string token;
     RT::TokenServer()->Encrypt(lexical_cast<std::string>(millisecondsSinceEpoch.count()), token);
 
-    out_tree.put(L"token", WString(token).value());
+    out_tree.put(L"token", WString(lexical_cast<std::string>(millisecondsSinceEpoch.count())).value());
 }
 
 void PublicAPIResource::Impl::DataByDateJSON(const std::wstring &date, std::wstring &out_response)
