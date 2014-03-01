@@ -191,12 +191,12 @@ PublicAPIResource::Impl::~Impl()
 bool PublicAPIResource::Impl::IsValidToken(const std::wstring &encryptedToken)
 {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-    time_t token;
+    double token;
 
     try {
         std::string decryptedToken;
         RT::TokenClient()->Decrypt(WString(encryptedToken).toUTF8(), decryptedToken);
-        token = boost::lexical_cast<time_t>(decryptedToken);
+        token = boost::lexical_cast<double>(decryptedToken);
     } catch (...) {
         return false;
     }
@@ -408,7 +408,7 @@ void PublicAPIResource::Impl::GetToken(boost::property_tree::wptree &out_tree)
     out_tree.clear();
 
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-    std::chrono::duration<time_t, std::milli> millisecondsSinceEpoch =
+    std::chrono::duration<double, std::milli> millisecondsSinceEpoch =
             std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
     std::string token;
