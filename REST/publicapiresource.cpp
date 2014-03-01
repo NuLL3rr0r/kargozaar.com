@@ -415,7 +415,7 @@ void PublicAPIResource::Impl::GetToken(boost::property_tree::wptree &out_tree)
     std::string token;
     RT::TokenServer()->Encrypt(lexical_cast<std::string>(millisecondsSinceEpoch.count()), token);
 
-    out_tree.put(L"token", WString(lexical_cast<std::string>(millisecondsSinceEpoch.count())).value());
+    out_tree.put(L"token", WString(token).value());
 }
 
 void PublicAPIResource::Impl::DataByDateJSON(const std::wstring &date, std::wstring &out_response)
