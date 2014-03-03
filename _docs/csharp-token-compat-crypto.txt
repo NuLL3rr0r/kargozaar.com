@@ -7,7 +7,7 @@
             return BitConverter.ToString(bytes).Replace("-", string.Empty);
         }
 
-        private static byte[] StringToByteArray(String hex)
+        private static byte[] HexStringToByteArray(String hex)
         {
             int charsCount = hex.Length / 2;
             byte[] bytes = new byte[charsCount];
@@ -17,6 +17,28 @@
                     bytes[i] = Convert.ToByte(new string(new char[2] { (char)sr.Read(), (char)sr.Read() }), 16);
             }
             return bytes;
+        }
+
+        private static string HexStringToString(string hexString)
+        {
+            string plainString = "";
+            while (hexString.Length > 0)
+            {
+                plainString += System.Convert.ToChar(System.Convert.ToUInt32(hexString.Substring(0, 2), 16)).ToString();
+                hexString = hexString.Substring(2, hexString.Length - 2);
+            }
+            return plainString;
+        }
+
+        private static string StringToHexString(string plainString)
+        {
+            string hexString = "";
+            foreach (char c in plainString)
+            {
+                int charCode = c;
+                hexString += String.Format("{0:x2}", (uint)System.Convert.ToUInt32(charCode.ToString()));
+            }
+            return hexString;
         }
 
         private static byte[] Encrypt(byte[] clearData, byte[] key, byte[] iv)
@@ -83,12 +105,12 @@
 
         public static string Encrypt(string clearText, byte[] key, byte[] iv)
         {
-            return ByteArrayToString(Encrypt(StringToByteArray(clearText), key, iv));
+            return ByteArrayToString(Encrypt(HexStringToByteArray(StringToHexString(clearText)), key, iv));
         }
 
         public static string Decrypt(string cipherText, byte[] key, byte[] iv)
         {
-            return ByteArrayToString(Decrypt(StringToByteArray(cipherText), key, iv));
+            return HexStringToString(ByteArrayToString(Decrypt(HexStringToByteArray(cipherText), key, iv)));
         }
     }
 
