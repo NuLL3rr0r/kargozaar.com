@@ -201,7 +201,7 @@ bool PublicAPIResource::Impl::IsValidToken(const std::wstring &encryptedToken)
         return false;
     }
 
-    if (std::abs(std::chrono::system_clock::to_time_t(now) - token)
+    if (std::abs((std::chrono::system_clock::to_time_t(now) * 1000.0) - token)
             > MAX_TOKEN_MILLISECONDS_DIFFERENCE) {
         return false;
     }
