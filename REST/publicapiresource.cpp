@@ -21,7 +21,7 @@
 #include "servicecontract.hpp"
 #include "xmlexception.hpp"
 
-#define     MAX_TOKEN_MILLISECONDS_DIFFERENCE             10000
+#define     MAX_TOKEN_MILLISECONDS_DIFFERENCE             240000
 
 #define     INVALID_TOKEN_ERROR                      L"INVALID_TOKEN"
 
