@@ -10,6 +10,10 @@ namespace StockMarket {
 
 class StockMarket::Home : public StockMarket::Page
 {
+private:
+    class Impl;
+    std::unique_ptr<Impl> m_pimpl;
+
 public:
     Home(CgiRoot *cgiRoot);
     ~Home();

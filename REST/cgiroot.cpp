@@ -39,6 +39,7 @@ CgiRoot::CgiRoot(const WEnvironment &env) :
 {
     try {
         this->setInternalPathDefaultValid(false);
+        this->setLayoutDirection(RightToLeft);
 
         setCssTheme("bootstrap");
 
