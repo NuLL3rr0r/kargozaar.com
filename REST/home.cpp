@@ -40,16 +40,13 @@ using namespace StockMarket;
 
 class Home::Impl : public Wt::WObject
 {
-private:
-    Home *m_home;
-
 public:
     bool IsStockDataTableVisible;
     Wt::WTimer *StockDataTableRefreshTimer;
     Div *DivStockTableInner;
 
 public:
-    Impl(Home *home);
+    Impl();
     ~Impl();
 
 public:
@@ -59,7 +56,7 @@ public:
 
 Home::Home(CgiRoot *cgi) :
     Page(cgi),
-    m_pimpl(std::make_unique<Home::Impl>(this))
+    m_pimpl(std::make_unique<Home::Impl>())
 {
     m_cgiRoot->setTitle(PAGE_TITLE);
 
@@ -137,8 +134,7 @@ WWidget *Home::Layout()
     return root;
 }
 
-Home::Impl::Impl(Home *home) :
-    m_home(home),
+Home::Impl::Impl() :
     IsStockDataTableVisible(false)
 {
     StockDataTableRefreshTimer = new Wt::WTimer();
