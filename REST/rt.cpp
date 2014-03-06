@@ -164,5 +164,7 @@ RT::Impl::~Impl()
     StorageInstance.reset();
     DBInstance.reset();
     StockUpdateWorkerInstance.reset();
+    TokenClientInstance.reset();
+    TokenServerInstance.reset();
 }
 
