@@ -7,7 +7,7 @@
             return BitConverter.ToString(bytes).Replace("-", string.Empty);
         }
 
-        private static byte[] HexStringToByteArray(String hex)
+        private static byte[] HexStringToByteArray(string hex)
         {
             int charsCount = hex.Length / 2;
             byte[] bytes = new byte[charsCount];
