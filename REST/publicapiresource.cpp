@@ -71,7 +71,6 @@ struct PublicAPIResource::Impl
     ~Impl();
 };
 
-
 PublicAPIResource::PublicAPIResource(WObject *parent) :
     APIResource(parent),
     m_pimpl(std::make_unique<PublicAPIResource::Impl>())
