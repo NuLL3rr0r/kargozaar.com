@@ -213,6 +213,8 @@ void PublicAPIResource::Impl::GetDataTree(const OutputType &outputType,
                                           const Row_t &titles, const Table_t &data,
                                           boost::property_tree::wptree &out_tree)
 {
+    out_tree.clear();
+
     out_tree.put(L"StockMarket.version.major", "1");
     out_tree.put(L"StockMarket.version.minor", "0");
     out_tree.put(L"StockMarket.version.compat.major", "1");
