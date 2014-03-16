@@ -7,8 +7,8 @@
 #include "xmlexception.hpp"
 
 using namespace std;
-using namespace StockMarket;
 using namespace Wt;
+using namespace StockMarket;
 
 XMLException::XMLException(const std::string &message) :
     Exception(message)
