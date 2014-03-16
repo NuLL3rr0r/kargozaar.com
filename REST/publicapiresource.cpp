@@ -103,10 +103,7 @@ void PublicAPIResource::handleRequest(const Wt::Http::Request &request, Wt::Http
             wstring outResponse;
 
             /// Validating the token
-            if (uriTemplate == DataByDateJSON_URI_TEMPLATE
-                    || uriTemplate == DataByDateXML_URI_TEMPLATE
-                    || uriTemplate == LatestDataJSON_URI_TEMPLATE
-                    || uriTemplate == LatestDataXML_URI_TEMPLATE) {
+            if (boost::algorithm::contains(uriTemplate, L"/{TOKEN}")) {
                 if (!m_pimpl->IsValidToken(args[args.size() - 1])) {
                     if (boost::algorithm::contains(uriTemplate, L"/JSON")) {
                         throw StockMarket::JSONException(INVALID_TOKEN_ERROR);
