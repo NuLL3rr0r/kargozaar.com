@@ -7,8 +7,8 @@
 #include "jsonexception.hpp"
 
 using namespace std;
-using namespace StockMarket;
 using namespace Wt;
+using namespace StockMarket;
 
 JSONException::JSONException(const std::string &message) :
     Exception(message)
