@@ -119,7 +119,7 @@ bool Mail::Send(std::string &out_error) const
         vmime::messageBuilder mb;
 
         mb.setExpeditor(vmime::mailbox(m_pimpl->From));
-        mb.getRecipients().appendAddress(vmime::vmime::make_shared<vmime::mailbox>(m_pimpl->To));
+        mb.getRecipients().appendAddress(vmime::make_shared<vmime::mailbox>(m_pimpl->To));
 
         mb.setSubject(*vmime::text::newFromString(m_pimpl->Subject, vmime::charsets::UTF_8));
 
