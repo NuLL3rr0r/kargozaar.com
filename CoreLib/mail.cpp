@@ -119,28 +119,28 @@ bool Mail::Send(std::string &out_error) const
         vmime::messageBuilder mb;
 
         mb.setExpeditor(vmime::mailbox(m_pimpl->From));
-        mb.getRecipients().appendAddress(vmime::create<vmime::mailbox>(m_pimpl->To));
+        mb.getRecipients().appendAddress(vmime::vmime::make_shared<vmime::mailbox>(m_pimpl->To));
 
         mb.setSubject(*vmime::text::newFromString(m_pimpl->Subject, vmime::charsets::UTF_8));
 
         mb.constructTextPart(vmime::mediaType(vmime::mediaTypes::TEXT, vmime::mediaTypes::TEXT_HTML));
         mb.getTextPart()->setCharset(vmime::charsets::UTF_8);
-        mb.getTextPart()->setText(vmime::create<vmime::stringContentHandler>(m_pimpl->Body));
+        mb.getTextPart()->setText(vmime::make_shared<vmime::stringContentHandler>(m_pimpl->Body));
 
         if (m_pimpl->Attachments.size() > 0) {
             for (auto a : m_pimpl->Attachments) {
-                vmime::ref <vmime::attachment> att = vmime::create <vmime::fileAttachment>
+                vmime::shared_ptr<vmime::attachment> att = vmime::make_shared<vmime::fileAttachment>
                         (a, vmime::mediaType("application/octet-stream"),
                          vmime::text(boost::filesystem::path(a).stem().string()));
                 mb.appendAttachment(att);
             }
         }
 
-        vmime::ref<vmime::message> msg = mb.construct();
+        vmime::shared_ptr<vmime::message> msg = mb.construct();
 
         vmime::utility::url url("smtp://localhost");
-        vmime::ref<vmime::net::session> sess = vmime::create<vmime::net::session>();
-        vmime::ref<vmime::net::transport> tr = sess->getTransport(url);
+        vmime::shared_ptr<vmime::net::session> sess = vmime::make_shared<vmime::net::session>();
+        vmime::shared_ptr<vmime::net::transport> tr = sess->getTransport(url);
 
         tr->connect();
         tr->send(msg);
@@ -179,4 +179,3 @@ Mail::Impl::~Impl()
 {
 
 }
-
