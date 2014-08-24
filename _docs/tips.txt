@@ -1,5 +1,3 @@
-
-
 ############################# HOW TO BUILD ///////
 cd StockMarketServer
 mkdir build
@@ -112,7 +110,7 @@ server {
 ############################# NGINX LOCAL dotCONF ///////
     merge_slashes on;
 
-    location /stock-market.rest(?<path_info>/.*|$) {
+    location ~ ^/srv/kargozaar.com/www/stock-market.rest(?<path_info>/.*|$) {
         fastcgi_pass   unix:/srv/kargozaar.com/tmp/kargozaar.com.socket;
 
         fastcgi_param  QUERY_STRING       $query_string;
@@ -137,5 +135,3 @@ server {
         fastcgi_param  SERVER_NAME        $server_name;
     }
 ############################# NGINX LOCAL dotCONF ///////
-
-
