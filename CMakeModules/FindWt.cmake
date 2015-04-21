@@ -1,6 +1,6 @@
 FIND_PATH ( WT_INCLUDE_DIR NAMES Wt PATHS /usr/include/ /usr/local/include/ )
-FIND_LIBRARY ( WT_LIBRARY NAMES wt PATHS /usr/include/ /usr/local/include/ )
-FIND_LIBRARY ( WT_FCGI_LIBRARY NAMES wtfcgi PATHS /usr/include/ /usr/local/include/ )
+FIND_LIBRARY ( WT_LIBRARY NAMES wt PATHS /usr/lib/ /usr/local/lib/ )
+FIND_LIBRARY ( WT_FCGI_LIBRARY NAMES wtfcgi PATHS /usr/lib/ /usr/local/lib/ )
 FIND_PATH ( WT_RESOURCES_DIR NAMES Wt/resources PATHS /usr/share/ /usr/local/share/ )
 
 
