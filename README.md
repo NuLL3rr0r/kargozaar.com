@@ -1,7 +1,7 @@
 Kargozaar.com
 =============
 
-Real-time stock quotes for Tehran Stock Exchange. A secure REST service for mobile apps and a minimal home page which shows live data, written in [Wt (Witty) C++ web framework](http://www.webtoolkit.eu/wt) with performance in mind.
+Real-time stock quotes for Tehran Stock Exchange. A secure high-performance REST service for mobile apps and a minimal home page which shows live data, written in [Wt (Witty) C++ web framework](http://www.webtoolkit.eu/wt) with performance in mind.
 
 This project consists of the following sub-projects:
 
